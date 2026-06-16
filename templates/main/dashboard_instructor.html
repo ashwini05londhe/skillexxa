@@ -1,0 +1,135 @@
+{% extends "main/base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Welcome back, {{ profile.name }}!</h1>
+        <p class="lead">Manage your instructor profile and connect with learners</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Profile Overview -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        {% if profile.photo %}
+                            <img src="{{ profile.photo.url }}" alt="Profile Photo" class="rounded-circle me-3" width="100" height="100">
+                        {% else %}
+                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3" style="width: 100px; height: 100px;">
+                                <span class="fs-1">{{ profile.name|first|upper }}</span>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <h3>{{ profile.name }}</h3>
+                            <p class="text-muted">{{ profile.domain }}</p>
+                            <p>{{ profile.experience }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-around">
+                    <div>
+                        <span class="fw-bold">{{ portfolio|length }}</span> Portfolio Items
+                    </div>
+                    <div>
+                        <span class="fw-bold">{{ chat_rooms|length }}</span> Active Chats
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Gallery -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Your Portfolio</h3>
+                    <div class="row">
+                        {% for img in portfolio %}
+                            <div class="col-md-4 mb-3">
+                                <img src="{{ img.image.url }}" alt="{{ img.caption }}" class="img-fluid rounded">
+                                {% if img.caption %}
+                                    <p class="mt-2">{{ img.caption }}</p>
+                                {% endif %}
+                            </div>
+                        {% empty %}
+                            <div class="col">
+                                <div class="text-center">
+                                    <p>No portfolio items yet. Add some work to showcase your skills!</p>
+                                    <button class="btn btn-primary" onclick="togglePortfolioUpload()">Add First Item</button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <!-- Quick Actions -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Quick Actions</h3>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" onclick="toggleEditProfile()">Edit Profile</button>
+                        <button class="btn btn-secondary" onclick="togglePortfolioUpload()">Add Portfolio</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title"><i class="bi bi-bell"></i> Recent Activity</h3>
+                    <div class="list-group">
+                        {% for room in chat_rooms %}
+                            {% with room.messages.last as last_message %}
+                                {% if last_message %}
+                                    <a href="{% url 'main:chat' room.learner.id %}" class="list-group-item list-group-item-action {% if last_message.sender != profile %}list-group-item-info{% endif %}">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{ last_message.sender.name }}</h5>
+                                            <small>{{ last_message.timestamp|timesince }} ago</small>
+                                        </div>
+                                        <p class="mb-1">{{ last_message.content|truncatechars:50 }}</p>
+                                    </a>
+                                {% endif %}
+                            {% endwith %}
+                        {% empty %}
+                            <p class="text-muted">No messages yet. Start connecting with learners!</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Form (Hidden by default) -->
+    <div class="card mt-4" id="editProfileForm" style="display: none;">
+        <div class="card-body">
+            <h3 class="card-title">Edit Your Profile</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ pform.as_p }}
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+                <button type="button" class="btn btn-secondary" onclick="toggleEditProfile()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Portfolio Upload Form (Hidden by default) -->
+    <div class="card mt-4" id="portfolioUploadForm" style="display: none;">
+        <div class="card-body">
+            <h3 class="card-title">Add Portfolio Item</h3>
+            <form id="uploadForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ pif.as_p }}
+                <button type="submit" class="btn btn-primary">Upload</button>
+                <button type="button" class="btn btn-secondary" onclick="togglePortfolioUpload()">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('uploadForm').addEventListener('submit', uploadPortfolio);
+    });
+</script>
+{% endblock %}

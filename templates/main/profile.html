@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram-Style Profile</title>
+    <link rel="stylesheet" href="../static/main/profile.css">
+</head>
+<body>
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <header class="profile-header">
+            <div class="profile-pic">
+                <img src="../media/profiles/Screenshot_2023-11-03_012649.png" alt="Profile Picture">
+            </div>
+            <div class="profile-info">
+                <h1 class="username">John Doe</h1>
+                <span class="role-badge">Instructor</span>
+                <p class="bio">Experienced web developer passionate about teaching and creating innovative solutions. Specializing in full-stack development.</p>
+                <p class="domain">Web Development</p>
+            </div>
+        </header>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat">
+                <span class="stat-number">25</span>
+                <span class="stat-label">Posts</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Years Exp.</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">150</span>
+                <span class="stat-label">Connections</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn edit-btn">Edit Profile</button>
+            <button class="btn message-btn">Message</button>
+            <button class="btn video-btn">📹 Video Call</button>
+        </div>
+
+        <!-- Tabs -->
+        <nav class="tabs">
+            <ul>
+                <li class="tab active" data-tab="portfolio">Portfolio</li>
+                <li class="tab" data-tab="about">About</li>
+                <li class="tab" data-tab="reviews">Reviews</li>
+            </ul>
+        </nav>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <div id="portfolio" class="tab-pane active">
+                <div class="gallery">
+                    <div class="gallery-item">
+                        <img src="../media/portfolio/Screenshot_2023-11-03_012649_-_Copy.png" alt="Portfolio Image 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="../media/portfolio/Screenshot_2023-11-03_012714_-_Copy.png" alt="Portfolio Image 2">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="../media/portfolio/Screenshot_2023-11-03_012649_-_Copy_PRhMsGj.png" alt="Portfolio Image 3">
+                    </div>
+                    <!-- Add more items as needed -->
+                </div>
+            </div>
+            <div id="about" class="tab-pane">
+                <p>About content here. For Instructor: Detailed bio, experience, etc.</p>
+            </div>
+            <div id="reviews" class="tab-pane">
+                <p>Reviews content here. UI only.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-image">
+    </div>
+
+    <script src="../static/main/profile.js"></script>
+</body>
+</html>

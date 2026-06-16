@@ -1,0 +1,101 @@
+{% extends "main/base.html" %}
+{% block content %}
+{% load static %}
+
+<div class="home-page">
+<!-- Hero Section -->
+<section class="hero-section py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h1 class="display-4 fw-bold mb-4">Welcome to Skillexa</h1>
+        <p class="lead mb-4">Connect with expert instructors and unlock your potential. Start your learning journey today with personalized guidance and flexible scheduling.</p>
+        <div class="d-flex flex-column flex-sm-row gap-3">
+          <a href="{% url 'main:register' %}?role=learner" class="btn btn-light btn-lg px-4 py-3 fw-semibold">Get Started as Learner</a>
+          <a href="{% url 'main:register' %}?role=instructor" class="btn btn-outline-light btn-lg px-4 py-3 fw-semibold">Become an Instructor</a>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center mt-5 mt-lg-0">
+        <img src="{% static 'main/logo.png' %}" alt="Learning illustration" class="img-fluid rounded shadow-lg hover-lift">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mb-5">
+        <h2 class="display-5 fw-bold text-dark mb-3">Why Choose Skillexa?</h2>
+        <p class="lead text-muted">Discover the advantages that make us the preferred choice for online learning</p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm hover-lift">
+          <div class="card-body text-center p-4">
+            <div class="feature-icon mb-3">
+              <span class="display-4">🎓</span>
+            </div>
+            <h3 class="card-title h4 fw-bold text-dark mb-3">Expert Instructors</h3>
+            <p class="card-text text-muted">Learn from professionals with years of experience in their fields, providing you with top-quality education and mentorship.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm hover-lift">
+          <div class="card-body text-center p-4">
+            <div class="feature-icon mb-3">
+              <span class="display-4">⏰</span>
+            </div>
+            <h3 class="card-title h4 fw-bold text-dark mb-3">Flexible Learning</h3>
+            <p class="card-text text-muted">Schedule sessions that fit your lifestyle and pace. Learn at your own convenience with our adaptable learning platform.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm hover-lift">
+          <div class="card-body text-center p-4">
+            <div class="feature-icon mb-3">
+              <span class="display-4">💬</span>
+            </div>
+            <h3 class="card-title h4 fw-bold text-dark mb-3">Direct Communication</h3>
+            <p class="card-text text-muted">Chat directly with instructors to discuss your learning goals, get personalized feedback, and build meaningful connections.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4 stat-item">
+        <h3 class="fw-bold text-primary mb-2">10,000+</h3>
+        <p class="text-muted mb-0">Active Learners</p>
+      </div>
+      <div class="col-md-4 stat-item">
+        <h3 class="fw-bold text-primary mb-2">500+</h3>
+        <p class="text-muted mb-0">Expert Instructors</p>
+      </div>
+      <div class="col-md-4 stat-item">
+        <h3 class="fw-bold text-primary mb-2">50+</h3>
+        <p class="text-muted mb-0">Subjects Covered</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section text-white py-5">
+  <div class="container text-center">
+    <h2 class="display-5 fw-bold mb-3">Ready to Start Your Learning Journey?</h2>
+    <p class="lead mb-4">Join thousands of learners already improving their skills with Skillexa. Your future success starts here.</p>
+    <a href="{% url 'main:register' %}?role=learner" class="btn btn-light btn-lg px-5 py-3 fw-semibold shadow">Join Now</a>
+  </div>
+</section>
+
+{% endblock %}

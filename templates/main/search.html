@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container search-container">
+    <h1>Search for Instructors</h1>
+    <form class="search-form" action="{% url 'main:search' %}" method="get">
+        <input type="text" name="q" class="form-control" placeholder="Search by domain, name, or username">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <div id="search-results" class="search-results-container">
+        <!-- Results will be loaded here via JavaScript -->
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.querySelector('.search-form');
+    const searchResults = document.getElementById('search-results');
+
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const query = e.target.elements.q.value;
+        fetch(`/api/search/?q=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                searchResults.innerHTML = '';
+                if (data.results.length > 0) {
+                    const resultsRow = document.createElement('div');
+                    resultsRow.classList.add('row'); // Bootstrap row for grid
+
+                    data.results.forEach(result => {
+                        const resultElement = document.createElement('div');
+                        resultElement.classList.add('col-md-6', 'col-lg-4', 'mb-4'); // Bootstrap column for grid
+                        resultElement.innerHTML = `
+                            <div class="card search-result-card h-100 shadow-sm">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="card-title mb-0">${result.name}</h5>
+                                    <small class="text-white-50">@${result.username}</small>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text mb-2"><strong>Domain:</strong> ${result.domain}</p>
+                                    <p class="card-text mb-2"><strong>Profession:</strong> ${result.profession || 'N/A'}</p>
+                                    <p class="card-text mb-2"><strong>Experience:</strong> ${result.experience || 'N/A'}</p>
+                                    <p class="card-text mb-3">${result.bio}</p>
+                                </div>
+                                <div class="card-footer bg-light">
+                                    <a href="/instructor/${result.id}/" class="btn btn-primary btn-sm w-100">View Profile</a>
+                                </div>
+                            </div>
+                        `;
+                        resultsRow.appendChild(resultElement);
+                    });
+                    searchResults.appendChild(resultsRow);
+                } else {
+                    searchResults.innerHTML = '<p class="text-center">No results found.</p>';
+                }
+            });
+    });
+});
+</script>
+{% endblock %}

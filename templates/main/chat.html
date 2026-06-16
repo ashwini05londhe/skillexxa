@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+{% block content %}
+<div class="container mt-5">
+    {% if chat_error %}
+        <div class="alert alert-danger" role="alert">
+            {{ chat_error }}
+        </div>
+    {% else %}
+        <h2 class="mb-4">Chat with {{ other_user.name }}</h2>
+
+        <div class="card">
+            <div class="card-body chat-messages" id="chat-messages">
+                {% for message in messages %}
+                    <div class="mb-2 {% if message.sender == request.user.profile %}text-end{% endif %}">
+                        <div class="d-inline-block p-2 rounded {% if message.sender == request.user.profile %}bg-primary text-white{% else %}bg-light{% endif %}">
+                            <strong>{{ message.sender.name }}:</strong> {{ message.content }}
+                            <div class="text-muted" style="font-size: 0.75rem;">{{ message.timestamp|date:"M d, H:i" }}</div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">No messages yet. Start the conversation!</p>
+                {% endfor %}
+            </div>
+            <div class="card-footer">
+                <form method="post" class="d-flex">
+                    {% csrf_token %}
+                    <input type="text" name="message" class="form-control me-2" placeholder="Type your message..." required>
+                    <a href="{% url 'main:video_call' other_user.id %}" class="btn btn-success">Video Call</a>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatMessages = document.getElementById('chat-messages');
+        if (chatMessages) {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    });
+</script>
+{% endblock %}
+
+<style>
+.chat-messages {
+  height: 400px;
+  overflow-y: auto;
+}
+</style>
+{% endblock %}
